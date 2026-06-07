@@ -23,7 +23,7 @@
     }
 
     .container {
-      max-width: 1400px;
+      max-width: 1600px;
       width: 100%;
     }
 
@@ -59,8 +59,10 @@
     }
 
     .sidebar {
-      width: 240px;
+      width: 280px;
       flex-shrink: 0;
+      max-height: 900px;
+      overflow-y: auto;
     }
 
     .filter-section {
@@ -71,13 +73,34 @@
       margin-bottom: 20px;
     }
 
-    .filter-section h3 {
+    .filter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      margin-bottom: 15px;
+      user-select: none;
+    }
+
+    .filter-header h3 {
       font-size: 14px;
       font-weight: 700;
       color: #01579b;
-      margin-bottom: 15px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      margin: 0;
+    }
+
+    .filter-toggle {
+      font-size: 16px;
+      color: #0277bd;
+    }
+
+    .filter-description {
+      font-size: 12px;
+      color: #0277bd;
+      margin-bottom: 15px;
+      line-height: 1.4;
     }
 
     .filter-item {
@@ -100,6 +123,25 @@
       color: #424242;
       cursor: pointer;
       user-select: none;
+    }
+
+    .active-filter-badge {
+      display: inline-block;
+      background: #f44336;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-left: 8px;
+    }
+
+    .filter-section.collapsed .filter-items {
+      display: none;
+    }
+
+    .filter-items {
+      transition: all 0.3s ease;
     }
 
     .radar-wrapper {
@@ -245,6 +287,24 @@
       margin-top: 20px;
     }
 
+    /* Scrollbar styling */
+    .sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: #b3e5fc;
+      border-radius: 3px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb:hover {
+      background: #81d4fa;
+    }
+
     @media (max-width: 1200px) {
       .main-content {
         flex-direction: column;
@@ -253,6 +313,7 @@
 
       .sidebar {
         width: 100%;
+        max-height: none;
         display: flex;
         gap: 20px;
         flex-wrap: wrap;
@@ -301,43 +362,116 @@
     <div class="main-content">
       <!-- Sidebar Filters -->
       <div class="sidebar">
+        <!-- Maturity Filter -->
         <div class="filter-section">
-          <h3>🎯 Maturity</h3>
-          <div class="filter-item">
-            <input type="checkbox" id="adopt" checked>
-            <label for="adopt">ADOPT</label>
+          <div class="filter-header" onclick="toggleSection(this)">
+            <h3>🎯 Maturity</h3>
+            <span class="filter-toggle">−</span>
           </div>
-          <div class="filter-item">
-            <input type="checkbox" id="trial" checked>
-            <label for="trial">TRIAL</label>
-          </div>
-          <div class="filter-item">
-            <input type="checkbox" id="assess" checked>
-            <label for="assess">ASSESS</label>
-          </div>
-          <div class="filter-item">
-            <input type="checkbox" id="hold" checked>
-            <label for="hold">HOLD</label>
+          <div class="filter-items">
+            <div class="filter-item">
+              <input type="checkbox" id="adopt" class="maturity-filter" checked>
+              <label for="adopt">ADOPT</label>
+            </div>
+            <div class="filter-item">
+              <input type="checkbox" id="trial" class="maturity-filter" checked>
+              <label for="trial">TRIAL</label>
+            </div>
+            <div class="filter-item">
+              <input type="checkbox" id="assess" class="maturity-filter" checked>
+              <label for="assess">ASSESS</label>
+            </div>
+            <div class="filter-item">
+              <input type="checkbox" id="hold" class="maturity-filter" checked>
+              <label for="hold">HOLD</label>
+            </div>
           </div>
         </div>
 
+        <!-- Focus Areas Filter -->
         <div class="filter-section">
-          <h3>🔧 Domain</h3>
-          <div class="filter-item">
-            <input type="checkbox" id="thin-oil" checked>
-            <label for="thin-oil">Thin Oil Column</label>
+          <div class="filter-header" onclick="toggleSection(this)">
+            <h3>📊 Focus Areas</h3>
+            <span class="filter-toggle">−</span>
           </div>
-          <div class="filter-item">
-            <input type="checkbox" id="digital-ai" checked>
-            <label for="digital-ai">Digital / AI</label>
+          <div class="filter-description">Use the toggles below to filter visible trends.</div>
+          <div class="filter-items">
+            <div class="filter-item">
+              <input type="checkbox" id="fa-automation" class="focus-filter" checked>
+              <label for="fa-automation">Automation & Efficiency</label>
+            </div>
+            <div class="filter-item">
+              <input type="checkbox" id="fa-safety" class="focus-filter" checked>
+              <label for="fa-safety">Safety & Risk Management</label>
+            </div>
+            <div class="filter-item">
+              <input type="checkbox" id="fa-operations" class="focus-filter" checked>
+              <label for="fa-operations">Operations Optimization</label>
+            </div>
+            <div class="filter-item">
+              <input type="checkbox" id="fa-sustainability" class="focus-filter" checked>
+              <label for="fa-sustainability">Sustainability</label>
+            </div>
+            <div class="filter-item">
+              <input type="checkbox" id="fa-resilience" class="focus-filter" checked>
+              <label for="fa-resilience">Resilience & Reliability</label>
+            </div>
           </div>
-          <div class="filter-item">
-            <input type="checkbox" id="water-gas" checked>
-            <label for="water-gas">Water & Gas Mgmt</label>
+        </div>
+
+        <!-- Trend Clusters Filter -->
+        <div class="filter-section">
+          <div class="filter-header" onclick="toggleSection(this)">
+            <h3>🔗 Trend Clusters <span class="active-filter-badge" id="cluster-badge" style="display: none;">0</span></h3>
+            <span class="filter-toggle">−</span>
           </div>
-          <div class="filter-item">
-            <input type="checkbox" id="heavy-oil" checked>
-            <label for="heavy-oil">Heavy Oil</label>
+          <div class="filter-items">
+            <div class="filter-item">
+              <input type="checkbox" id="tc-ai" class="cluster-filter" checked>
+              <label for="tc-ai">Artificial Intelligence</label>
+            </div>
+            <div class="filter-item">
+              <input type="checkbox" id="tc-sensing" class="cluster-filter" checked>
+              <label for="tc-sensing">Advanced Sensing</label>
+            </div>
+            <div class="filter-item">
+              <input type="checkbox" id="tc-robotics" class="cluster-filter" checked>
+              <label for="tc-robotics">Robotics & Automation</label>
+            </div>
+            <div class="filter-item">
+              <input type="checkbox" id="tc-connectivity" class="cluster-filter" checked>
+              <label for="tc-connectivity">Connectivity & IoT</label>
+            </div>
+            <div class="filter-item">
+              <input type="checkbox" id="tc-digital" class="cluster-filter" checked>
+              <label for="tc-digital">Digital Infrastructure</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sectors Filter -->
+        <div class="filter-section">
+          <div class="filter-header" onclick="toggleSection(this)">
+            <h3>🏢 Sectors</h3>
+            <span class="filter-toggle">−</span>
+          </div>
+          <div class="filter-items">
+            <div class="filter-item">
+              <input type="checkbox" id="sector-reservoir" class="sector-filter" checked>
+              <label for="sector-reservoir">Reservoir Management</label>
+            </div>
+            <div class="filter-item">
+              <input type="checkbox" id="sector-drilling" class="sector-filter" checked>
+              <label for="sector-drilling">Drilling & Completion</label>
+            </div>
+            <div class="filter-item">
+              <input type="checkbox" id="sector-safety" class="sector-filter" checked>
+              <label for="sector-safety">Safety & HSE</label>
+            </div>
+            <div class="filter-item">
+              <input type="checkbox" id="sector-operations" class="sector-filter" checked>
+              <label for="sector-operations">Operations</label>
+            </div>
           </div>
         </div>
       </div>
@@ -460,64 +594,80 @@
         category: "adopt",
         impact: 0.35,
         angle: 10,
-        summary: "Autonomous inspection for platforms & flare stacks.",
-        details: "Unmanned aerial vehicles (UAVs) equipped with autonomous flight systems for automated visual inspection of offshore and onshore assets. These systems use GPS, computer vision, and pre-programmed flight paths to capture high-resolution imagery and video of structures, reducing safety risks and operational costs."
+        details: "Unmanned aerial vehicles (UAVs) equipped with autonomous flight systems for automated visual inspection of offshore and onshore assets. These systems use GPS, computer vision, and pre-programmed flight paths to capture high-resolution imagery and video of structures, reducing safety risks and operational costs.",
+        focus: "fa-safety",
+        cluster: "tc-robotics",
+        sector: "sector-safety"
       },
       {
         name: "Methane Leak Detection (OGI)",
         category: "trial",
         impact: 0.55,
         angle: 85,
-        summary: "OGI drone-based methane detection systems.",
-        details: "Optical Gas Imaging (OGI) is a thermal imaging technology that detects hydrocarbon gas emissions invisible to the human eye. Mounted on drones, OGI cameras can rapidly identify and locate methane leaks across large areas, enabling faster remediation and improved environmental compliance."
+        details: "Optical Gas Imaging (OGI) is a thermal imaging technology that detects hydrocarbon gas emissions invisible to the human eye. Mounted on drones, OGI cameras can rapidly identify and locate methane leaks across large areas, enabling faster remediation and improved environmental compliance.",
+        focus: "fa-sustainability",
+        cluster: "tc-sensing",
+        sector: "sector-operations"
       },
       {
         name: "Confined Space Inspection",
         category: "trial",
         impact: 0.50,
         angle: 70,
-        summary: "Drones for confined space inspections (tanks).",
-        details: "Deployment of small drones and robotic systems for inspection of confined spaces such as storage tanks, pipelines, and vessel interiors. This technology eliminates the need for human entry into hazardous environments, improving worker safety and providing detailed visual assessment of internal conditions."
+        details: "Deployment of small drones and robotic systems for inspection of confined spaces such as storage tanks, pipelines, and vessel interiors. This technology eliminates the need for human entry into hazardous environments, improving worker safety and providing detailed visual assessment of internal conditions.",
+        focus: "fa-safety",
+        cluster: "tc-robotics",
+        sector: "sector-safety"
       },
       {
         name: "Digital Twin Mapping",
         category: "assess",
         impact: 0.70,
         angle: 110,
-        summary: "Drone-based digital twin and 3D mapping.",
-        details: "A digital twin is a virtual replica of a physical asset created using drone survey data and 3D modeling. This technology enables real-time monitoring, predictive maintenance, and operational optimization by combining high-resolution imagery with geospatial data."
+        details: "A digital twin is a virtual replica of a physical asset created using drone survey data and 3D modeling. This technology enables real-time monitoring, predictive maintenance, and operational optimization by combining high-resolution imagery with geospatial data.",
+        focus: "fa-operations",
+        cluster: "tc-digital",
+        sector: "sector-operations"
       },
       {
         name: "Drone Swarms",
         category: "hold",
         impact: 0.80,
         angle: 220,
-        summary: "Multi-drone coordination & swarm technology.",
-        details: "Swarm robotics involves coordinating multiple drones to work collectively toward a common objective. While promising for large-area coverage, real-time collaboration, and resilience, this technology remains immature due to challenges in communication protocols, collision avoidance, and regulatory frameworks."
+        details: "Swarm robotics involves coordinating multiple drones to work collectively toward a common objective. While promising for large-area coverage, real-time collaboration, and resilience, this technology remains immature due to challenges in communication protocols, collision avoidance, and regulatory frameworks.",
+        focus: "fa-automation",
+        cluster: "tc-robotics",
+        sector: "sector-operations"
       },
       {
         name: "Water Management Monitoring",
         category: "assess",
         impact: 0.60,
         angle: 200,
-        summary: "Drone-based water injection monitoring.",
-        details: "Aerial monitoring of water injection facilities and produced water management systems. Drones equipped with thermal and multispectral sensors can assess facility performance, detect anomalies, and monitor environmental impacts in real-time."
+        details: "Aerial monitoring of water injection facilities and produced water management systems. Drones equipped with thermal and multispectral sensors can assess facility performance, detect anomalies, and monitor environmental impacts in real-time.",
+        focus: "fa-sustainability",
+        cluster: "tc-sensing",
+        sector: "sector-reservoir"
       },
       {
         name: "Heavy Oil Reservoir Mapping",
         category: "trial",
         impact: 0.65,
         angle: 280,
-        summary: "Advanced drone mapping for heavy oil fields.",
-        details: "Specialized drone systems for characterizing heavy oil reservoirs through detailed surface surveys, topographic mapping, and seismic data integration. This technology supports better reservoir understanding and production optimization in challenging heavy oil environments."
+        details: "Specialized drone systems for characterizing heavy oil reservoirs through detailed surface surveys, topographic mapping, and seismic data integration. This technology supports better reservoir understanding and production optimization in challenging heavy oil environments.",
+        focus: "fa-operations",
+        cluster: "tc-digital",
+        sector: "sector-drilling"
       },
       {
         name: "Real-time Subsurface Analytics",
         category: "trial",
         impact: 0.45,
         angle: 135,
-        summary: "AI-powered real-time analysis of drone data.",
-        details: "Machine learning and artificial intelligence algorithms that automatically process and interpret drone survey data, including image recognition, anomaly detection, and predictive modeling. This enables faster decision-making and identification of operational issues without manual analysis delays."
+        details: "Machine learning and artificial intelligence algorithms that automatically process and interpret drone survey data, including image recognition, anomaly detection, and predictive modeling. This enables faster decision-making and identification of operational issues without manual analysis delays.",
+        focus: "fa-automation",
+        cluster: "tc-ai",
+        sector: "sector-operations"
       }
     ];
 
@@ -531,6 +681,13 @@
     const svg = document.getElementById("radar-svg");
     const tooltip = document.getElementById("tooltip");
 
+    function toggleSection(header) {
+      const section = header.parentElement;
+      section.classList.toggle("collapsed");
+      const toggle = header.querySelector(".filter-toggle");
+      toggle.textContent = section.classList.contains("collapsed") ? "+" : "−";
+    }
+
     function renderItems() {
       const existingGroup = document.getElementById("items-group");
       if (existingGroup) existingGroup.remove();
@@ -538,7 +695,7 @@
       const itemsGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
       itemsGroup.id = "items-group";
 
-      radarData.forEach(item => {
+      radarData.forEach((item, index) => {
         const centerX = 375, centerY = 375;
         const maxRadius = 300;
         const radius = item.impact * maxRadius;
@@ -554,7 +711,10 @@
         dot.setAttribute("fill", colors[item.category]);
         dot.setAttribute("class", `item-dot ${item.category}`);
         dot.setAttribute("data-category", item.category);
-        dot.setAttribute("data-index", radarData.indexOf(item));
+        dot.setAttribute("data-focus", item.focus);
+        dot.setAttribute("data-cluster", item.cluster);
+        dot.setAttribute("data-sector", item.sector);
+        dot.setAttribute("data-index", index);
 
         dot.addEventListener("mouseenter", (e) => {
           showTooltip(e, item);
@@ -572,7 +732,10 @@
         label.setAttribute("y", y - 8);
         label.setAttribute("class", "item-label");
         label.setAttribute("data-category", item.category);
-        label.setAttribute("data-index", radarData.indexOf(item));
+        label.setAttribute("data-focus", item.focus);
+        label.setAttribute("data-cluster", item.cluster);
+        label.setAttribute("data-sector", item.sector);
+        label.setAttribute("data-index", index);
         label.textContent = item.name;
 
         itemsGroup.appendChild(label);
@@ -601,11 +764,34 @@
     }
 
     function applyFilters() {
-      const checks = {
+      const maturityChecks = {
         adopt: document.getElementById("adopt").checked,
         trial: document.getElementById("trial").checked,
         assess: document.getElementById("assess").checked,
         hold: document.getElementById("hold").checked
+      };
+
+      const focusChecks = {
+        "fa-automation": document.getElementById("fa-automation").checked,
+        "fa-safety": document.getElementById("fa-safety").checked,
+        "fa-operations": document.getElementById("fa-operations").checked,
+        "fa-sustainability": document.getElementById("fa-sustainability").checked,
+        "fa-resilience": document.getElementById("fa-resilience").checked
+      };
+
+      const clusterChecks = {
+        "tc-ai": document.getElementById("tc-ai").checked,
+        "tc-sensing": document.getElementById("tc-sensing").checked,
+        "tc-robotics": document.getElementById("tc-robotics").checked,
+        "tc-connectivity": document.getElementById("tc-connectivity").checked,
+        "tc-digital": document.getElementById("tc-digital").checked
+      };
+
+      const sectorChecks = {
+        "sector-reservoir": document.getElementById("sector-reservoir").checked,
+        "sector-drilling": document.getElementById("sector-drilling").checked,
+        "sector-safety": document.getElementById("sector-safety").checked,
+        "sector-operations": document.getElementById("sector-operations").checked
       };
 
       const itemsGroup = document.getElementById("items-group");
@@ -613,8 +799,16 @@
 
       itemsGroup.querySelectorAll(".item-dot, .item-label").forEach(el => {
         const category = el.getAttribute("data-category");
+        const focus = el.getAttribute("data-focus");
+        const cluster = el.getAttribute("data-cluster");
+        const sector = el.getAttribute("data-sector");
 
-        if (checks[category]) {
+        const maturityMatch = maturityChecks[category];
+        const focusMatch = focusChecks[focus];
+        const clusterMatch = clusterChecks[cluster];
+        const sectorMatch = sectorChecks[sector];
+
+        if (maturityMatch && focusMatch && clusterMatch && sectorMatch) {
           el.style.opacity = "1";
           el.style.pointerEvents = "auto";
         } else {
@@ -622,6 +816,16 @@
           el.style.pointerEvents = "none";
         }
       });
+
+      // Update cluster badge
+      const activeClusterCount = Object.values(clusterChecks).filter(v => !v).length;
+      const badge = document.getElementById("cluster-badge");
+      if (activeClusterCount > 0) {
+        badge.textContent = activeClusterCount;
+        badge.style.display = "inline-block";
+      } else {
+        badge.style.display = "none";
+      }
     }
 
     // Add filter event listeners
