@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Subsurface Technology Radar</title>
+  <title>North Oil Technology Radar</title>
   <style>
     * {
       margin: 0;
@@ -27,9 +27,41 @@
       width: 100%;
     }
 
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      gap: 20px;
+    }
+
+    .logo-placeholder {
+      width: 120px;
+      height: 60px;
+      background: white;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      flex-shrink: 0;
+    }
+
+    .logo-placeholder img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .logo-placeholder svg {
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+    }
+
     .header {
       text-align: center;
-      margin-bottom: 40px;
+      flex: 1;
       color: #01579b;
     }
 
@@ -418,6 +450,10 @@
     }
 
     @media (max-width: 768px) {
+      .top-bar {
+        flex-direction: column;
+      }
+
       .radar-container {
         width: 100%;
         max-width: 550px;
@@ -439,10 +475,42 @@
 <body>
 
   <div class="container">
-    <div class="header">
-      <h1>SUBSURFACE TECHNOLOGY RADAR</h1>
-      <p>Al Shaheen Digital Innovation – Drones (Pilot)</p>
-      <p class="subtitle">8 sectors • 3 time rings • Technologies across subsurface domains</p>
+    <div class="top-bar">
+      <div class="logo-placeholder">
+        <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+          <!-- North Oil Logo Placeholder -->
+          <defs>
+            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#0277bd;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#01579b;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          
+          <!-- Circle background -->
+          <circle cx="100" cy="50" r="48" fill="url(#logoGradient)" opacity="0.15"/>
+          <circle cx="100" cy="50" r="48" fill="none" stroke="url(#logoGradient)" stroke-width="2"/>
+          
+          <!-- North arrow/compass -->
+          <polygon points="100,20 108,35 100,32 92,35" fill="#0277bd"/>
+          
+          <!-- Oil derrick/pump -->
+          <line x1="100" y1="40" x2="100" y2="65" stroke="#0277bd" stroke-width="2"/>
+          <line x1="85" y1="45" x2="115" y2="45" stroke="#0277bd" stroke-width="1.5"/>
+          <line x1="90" y1="50" x2="110" y2="50" stroke="#0277bd" stroke-width="1.5"/>
+          <circle cx="100" cy="65" r="4" fill="#0277bd"/>
+          
+          <!-- Text -->
+          <text x="100" y="85" font-size="12" font-weight="bold" fill="#0277bd" text-anchor="middle">NORTH OIL</text>
+        </svg>
+      </div>
+
+      <div class="header">
+        <h1>NORTH OIL TECHNOLOGY RADAR</h1>
+        <p>Digital Innovation – Drones (Pilot)</p>
+        <p class="subtitle">8 sectors • 3 time rings • Technologies across subsurface domains</p>
+      </div>
+
+      <div style="width: 120px;"></div>
     </div>
 
     <div class="main-content">
