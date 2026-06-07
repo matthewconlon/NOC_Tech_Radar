@@ -45,6 +45,7 @@
       justify-content: center;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       flex-shrink: 0;
+      padding: 5px;
     }
 
     .logo-placeholder img {
@@ -477,31 +478,7 @@
   <div class="container">
     <div class="top-bar">
       <div class="logo-placeholder">
-        <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
-          <!-- North Oil Logo Placeholder -->
-          <defs>
-            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#0277bd;stop-opacity:1" />
-              <stop offset="100%" style="stop-color:#01579b;stop-opacity:1" />
-            </linearGradient>
-          </defs>
-          
-          <!-- Circle background -->
-          <circle cx="100" cy="50" r="48" fill="url(#logoGradient)" opacity="0.15"/>
-          <circle cx="100" cy="50" r="48" fill="none" stroke="url(#logoGradient)" stroke-width="2"/>
-          
-          <!-- North arrow/compass -->
-          <polygon points="100,20 108,35 100,32 92,35" fill="#0277bd"/>
-          
-          <!-- Oil derrick/pump -->
-          <line x1="100" y1="40" x2="100" y2="65" stroke="#0277bd" stroke-width="2"/>
-          <line x1="85" y1="45" x2="115" y2="45" stroke="#0277bd" stroke-width="1.5"/>
-          <line x1="90" y1="50" x2="110" y2="50" stroke="#0277bd" stroke-width="1.5"/>
-          <circle cx="100" cy="65" r="4" fill="#0277bd"/>
-          
-          <!-- Text -->
-          <text x="100" y="85" font-size="12" font-weight="bold" fill="#0277bd" text-anchor="middle">NORTH OIL</text>
-        </svg>
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NzAgNDY2Ij48ZGVmcz48c3R5bGU+LnN0MHtmaWxsOiMxRDc3QTR9LnN0MXtmaWxsOiMwMDJDNUF9PC9zdHlsZT48L2RlZnM+PHBhdGggY2xhc3M9InN0MCIgZD0iTTMwIDQyaDE2MHYzODRIMzB6Ii8+PHBhdGggY2xhc3M9InN0MCIgZD0iTTIzMCAyMTBjNTUtNzAgMTA0LTEwNSAxNjAtMTA1czEwNSAzNSAxNjAgMTA1bDAgMTZjLTU1LTcwLTEwNC0xMDUtMTYwLTEwNXMtMTA1IDM1LTE2MCAxMDV6Ii8+PHBhdGggY2xhc3M9InN0MCIgZD0iTTMwIDQyaDE2MHYzODRIMzB6Ii8+PHBhdGggY2xhc3M9InN0MCIgZD0iTTIwMiA0MmgxNjB2Mzg0SzIwMnoiLz48Y2lyY2xlIGN4PSI0NzAiIGN5PSIxNjAiIHI9IjE0MCIgZmlsbD0iI0ZGQjQyNyIvPjxjaXJjbGUgY3g9IjQ3MCIgY3k9IjE2MCIgcj0iMTAwIiBmaWxsPSIjRkZDMDMzIi8+PGNpcmNsZSBjeD0iNDcwIiBjeT0iMTYwIiByPSI2MCIgZmlsbD0iI0ZGRTBCMiIvPjx0ZXh0IHg9IjEwMCIgeT0iNDUwIiBjbGFzcz0ic3QxIiBmb250LXNpemU9IjkyIiBmb250LXdlaWdodD0iYm9sZCIgZm9udC1mYW1pbHk9IkFyaWFsIj7Zs9i52bHYr1lvaWwKQ29tcGFueTwvdGV4dD48L3N2Zz4=" alt="North Oil Company Logo">
       </div>
 
       <div class="header">
@@ -775,7 +752,7 @@
         category: "adopt",
         impact: 0.35,
         angle: 10,
-        details: "Unmanned aerial vehicles (UAVs) equipped with autonomous flight systems for automated visual inspection of offshore and onshore assets. These systems use GPS, computer vision, and pre-programmed flight paths to capture high-resolution imagery and video of structures, reducing safety risks and operational costs.",
+        details: "Unmanned aerial vehicles (UAVs) equipped with autonomous flight systems for automated visual inspection of offshore and onshore assets. These systems use GPS, computer vision, a[...]",
         focus: "fa-safety",
         cluster: "tc-robotics",
         sector: "sector-safety"
@@ -785,7 +762,7 @@
         category: "trial",
         impact: 0.55,
         angle: 85,
-        details: "Optical Gas Imaging (OGI) is a thermal imaging technology that detects hydrocarbon gas emissions invisible to the human eye. Mounted on drones, OGI cameras can rapidly identify and locate methane leaks across large areas, enabling faster remediation and improved environmental compliance.",
+        details: "Optical Gas Imaging (OGI) is a thermal imaging technology that detects hydrocarbon gas emissions invisible to the human eye. Mounted on drones, OGI cameras can rapidly identify [...]",
         focus: "fa-sustainability",
         cluster: "tc-sensing",
         sector: "sector-operations"
@@ -795,7 +772,7 @@
         category: "trial",
         impact: 0.50,
         angle: 70,
-        details: "Deployment of small drones and robotic systems for inspection of confined spaces such as storage tanks, pipelines, and vessel interiors. This technology eliminates the need for human entry into hazardous environments, improving worker safety and providing detailed visual assessment of internal conditions.",
+        details: "Deployment of small drones and robotic systems for inspection of confined spaces such as storage tanks, pipelines, and vessel interiors. This technology eliminates the need for [...]",
         focus: "fa-safety",
         cluster: "tc-robotics",
         sector: "sector-safety"
@@ -805,7 +782,7 @@
         category: "assess",
         impact: 0.70,
         angle: 110,
-        details: "A digital twin is a virtual replica of a physical asset created using drone survey data and 3D modeling. This technology enables real-time monitoring, predictive maintenance, and operational optimization by combining high-resolution imagery with geospatial data.",
+        details: "A digital twin is a virtual replica of a physical asset created using drone survey data and 3D modeling. This technology enables real-time monitoring, predictive maintenance, an[...]",
         focus: "fa-operations",
         cluster: "tc-digital",
         sector: "sector-operations"
@@ -815,7 +792,7 @@
         category: "hold",
         impact: 0.80,
         angle: 220,
-        details: "Swarm robotics involves coordinating multiple drones to work collectively toward a common objective. While promising for large-area coverage, real-time collaboration, and resilience, this technology remains immature due to challenges in communication protocols, collision avoidance, and regulatory frameworks.",
+        details: "Swarm robotics involves coordinating multiple drones to work collectively toward a common objective. While promising for large-area coverage, real-time collaboration, and resili[...]",
         focus: "fa-automation",
         cluster: "tc-robotics",
         sector: "sector-operations"
@@ -825,7 +802,7 @@
         category: "assess",
         impact: 0.60,
         angle: 200,
-        details: "Aerial monitoring of water injection facilities and produced water management systems. Drones equipped with thermal and multispectral sensors can assess facility performance, detect anomalies, and monitor environmental impacts in real-time.",
+        details: "Aerial monitoring of water injection facilities and produced water management systems. Drones equipped with thermal and multispectral sensors can assess facility performance, de[...]",
         focus: "fa-sustainability",
         cluster: "tc-sensing",
         sector: "sector-reservoir"
@@ -835,7 +812,7 @@
         category: "trial",
         impact: 0.65,
         angle: 280,
-        details: "Specialized drone systems for characterizing heavy oil reservoirs through detailed surface surveys, topographic mapping, and seismic data integration. This technology supports better reservoir understanding and production optimization in challenging heavy oil environments.",
+        details: "Specialized drone systems for characterizing heavy oil reservoirs through detailed surface surveys, topographic mapping, and seismic data integration. This technology supports b[...]",
         focus: "fa-operations",
         cluster: "tc-digital",
         sector: "sector-drilling"
@@ -845,7 +822,7 @@
         category: "trial",
         impact: 0.45,
         angle: 135,
-        details: "Machine learning and artificial intelligence algorithms that automatically process and interpret drone survey data, including image recognition, anomaly detection, and predictive modeling. This enables faster decision-making and identification of operational issues without manual analysis delays.",
+        details: "Machine learning and artificial intelligence algorithms that automatically process and interpret drone survey data, including image recognition, anomaly detection, and predictiv[...]",
         focus: "fa-automation",
         cluster: "tc-ai",
         sector: "sector-operations"
@@ -998,23 +975,24 @@
         }
       });
 
-      // Update cluster badge
-      const activeClusterCount = Object.values(clusterChecks).filter(v => !v).length;
-      const badge = document.getElementById("cluster-badge");
-      if (activeClusterCount > 0) {
-        badge.textContent = activeClusterCount;
-        badge.style.display = "inline-block";
-      } else {
-        badge.style.display = "none";
-      }
+      updateClusterBadge();
     }
 
-    // Add filter event listeners
-    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-      checkbox.addEventListener("change", applyFilters);
+    function updateClusterBadge() {
+      const clusterInputs = document.querySelectorAll(".cluster-filter:not(:checked)");
+      const badge = document.getElementById("cluster-badge");
+      badge.textContent = clusterInputs.length;
+      badge.style.display = clusterInputs.length > 0 ? "inline-block" : "none";
+    }
+
+    // Event listeners for filters
+    document.querySelectorAll(".maturity-filter, .focus-filter, .cluster-filter, .sector-filter").forEach(input => {
+      input.addEventListener("change", applyFilters);
     });
 
+    // Initial render
     renderItems();
+    applyFilters();
   </script>
 
 </body>
