@@ -159,6 +159,7 @@
       background: white;
       border-radius: 50%;
       box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
     }
 
     svg {
@@ -212,6 +213,34 @@
       fill: #01579b;
       pointer-events: none;
       user-select: none;
+    }
+
+    /* Radar scanner animation */
+    @keyframes radarScan {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .radar-scanner {
+      animation: radarScan 8s linear infinite;
+      transform-origin: center;
+    }
+
+    .scanner-line {
+      stroke: #0288d1;
+      stroke-width: 2;
+      opacity: 0.8;
+    }
+
+    .scanner-glow {
+      fill: none;
+      stroke: url(#scannerGradient);
+      stroke-width: 3;
+      opacity: 0.6;
     }
 
     .tooltip {
@@ -504,6 +533,12 @@
                 <stop offset="0%" style="stop-color:#4db8ff;stop-opacity:0.08" />
                 <stop offset="100%" style="stop-color:#4db8ff;stop-opacity:0" />
               </linearGradient>
+
+              <!-- Scanner gradient -->
+              <radialGradient id="scannerGradient" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" style="stop-color:#0288d1;stop-opacity:0.8" />
+                <stop offset="100%" style="stop-color:#0288d1;stop-opacity:0" />
+              </radialGradient>
             </defs>
 
             <!-- Background -->
@@ -553,6 +588,14 @@
             <text x="375" y="370" style="font-size: 16px; font-weight: 700; fill: #01579b; text-anchor: middle;">SUBSURFACE</text>
             <text x="375" y="390" style="font-size: 16px; font-weight: 700; fill: #01579b; text-anchor: middle;">TECHNOLOGY</text>
             <text x="375" y="410" style="font-size: 16px; font-weight: 700; fill: #01579b; text-anchor: middle;">RADAR</text>
+
+            <!-- Scanner group -->
+            <g class="radar-scanner" id="scanner-group">
+              <!-- Scanner sweep line -->
+              <line x1="375" y1="375" x2="375" y2="35" class="scanner-line"/>
+              <!-- Scanner glow effect -->
+              <path d="M 375 375 L 375 35 A 340 340 0 0 1 715 375" class="scanner-glow" />
+            </g>
 
             <!-- Items will be rendered by JavaScript -->
           </svg>
