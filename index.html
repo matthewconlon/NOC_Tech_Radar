@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NOC Tech Radar</title>
+  <title>NOC Tech Radar – Drones</title>
   <style>
     * {
       margin: 0;
@@ -19,335 +19,576 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px 20px;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      width: 100%;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 60px;
-      color: #5a4a3a;
+      margin-bottom: 40px;
+      color: #3d2817;
     }
 
     .header h1 {
       font-size: 42px;
       margin-bottom: 10px;
-      color: #3d2817;
+      font-weight: 700;
       letter-spacing: 1px;
     }
 
     .header p {
       font-size: 16px;
       color: #8b6f47;
+      margin-bottom: 20px;
+    }
+
+    .main-content {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+    }
+
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+    }
+
+    .filter-section {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .filter-section h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #3d2817;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .filter-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+
+    .filter-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: #d4af37;
+    }
+
+    .filter-item label {
+      margin-left: 10px;
+      font-size: 13px;
+      color: #5a4a3a;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .radar-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
     }
 
     .radar-container {
       position: relative;
-      width: 600px;
-      height: 600px;
-      margin: 0 auto;
+      width: 700px;
+      height: 700px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
     }
 
-    .compass-outer {
-      position: absolute;
+    svg {
       width: 100%;
       height: 100%;
-      border-radius: 50%;
-      background: radial-gradient(circle, #fef5e7 0%, #f9e8c3 70%, #d4af37 100%);
-      border: 8px solid #d4af37;
-      box-shadow: 0 0 30px rgba(212, 175, 55, 0.4), inset 0 0 30px rgba(255, 255, 255, 0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
-    .compass-inner {
-      position: absolute;
-      width: 85%;
-      height: 85%;
-      border-radius: 50%;
-      background: radial-gradient(circle, #fffef0 0%, #fef5e7 50%, #f5e6d3 100%);
-      border: 3px solid #d4af37;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .ring {
+      fill: none;
+      stroke: #d4af37;
+      stroke-width: 1;
+      opacity: 0.3;
     }
 
-    .compass-center {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      background: radial-gradient(circle, #ffeb3b 0%, #d4af37 100%);
-      border-radius: 50%;
-      border: 3px solid #d4af37;
-      z-index: 100;
-      box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+    .ring-label {
+      font-size: 11px;
+      font-weight: 600;
+      fill: #8b6f47;
+      text-anchor: middle;
     }
 
-    /* Compass directions */
-    .direction {
-      position: absolute;
-      font-weight: bold;
-      color: #3d2817;
-      font-size: 18px;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .quadrant-label-text {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 1px;
     }
 
-    .direction-north {
-      top: -30px;
-      text-align: center;
+    .quadrant-adopt .quadrant-label-text { fill: #2e7d32; }
+    .quadrant-trial .quadrant-label-text { fill: #1565c0; }
+    .quadrant-assess .quadrant-label-text { fill: #f57f17; }
+    .quadrant-hold .quadrant-label-text { fill: #c62828; }
+
+    .item-dot {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2));
     }
 
-    .direction-south {
-      bottom: -30px;
-      text-align: center;
+    .item-dot:hover {
+      r: 6;
+      filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.3));
     }
 
-    .direction-east {
-      right: -35px;
-      width: auto;
-    }
-
-    .direction-west {
-      left: -35px;
-      width: auto;
-    }
-
-    /* Quadrants */
-    .quadrant {
-      position: absolute;
-      width: 50%;
-      height: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      text-align: center;
-      border-radius: 50%;
-    }
-
-    .quadrant-adopt {
-      top: 0;
-      left: 0;
-      background: radial-gradient(circle at 100% 100%, rgba(76, 175, 80, 0.15), transparent 70%);
-    }
-
-    .quadrant-trial {
-      top: 0;
-      right: 0;
-      background: radial-gradient(circle at 0% 100%, rgba(33, 150, 243, 0.15), transparent 70%);
-    }
-
-    .quadrant-assess {
-      bottom: 0;
-      right: 0;
-      background: radial-gradient(circle at 0% 0%, rgba(255, 193, 7, 0.15), transparent 70%);
-    }
-
-    .quadrant-hold {
-      bottom: 0;
-      left: 0;
-      background: radial-gradient(circle at 100% 0%, rgba(244, 67, 54, 0.15), transparent 70%);
-    }
-
-    .quadrant-label {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 15px;
-      letter-spacing: 2px;
-    }
-
-    .quadrant-adopt .quadrant-label {
-      color: #2e7d32;
-    }
-
-    .quadrant-trial .quadrant-label {
-      color: #1565c0;
-    }
-
-    .quadrant-assess .quadrant-label {
-      color: #f57f17;
-    }
-
-    .quadrant-hold .quadrant-label {
-      color: #c62828;
-    }
-
-    .item {
-      font-size: 13px;
-      line-height: 1.6;
-      color: #3d2817;
-      margin: 5px 0;
+    .item-label {
+      font-size: 11px;
       font-weight: 500;
-    }
-
-    .item-icon {
-      font-size: 18px;
-      margin-right: 5px;
-    }
-
-    /* Decorative compass rose lines */
-    .compass-rose {
-      position: absolute;
-      width: 100%;
-      height: 100%;
+      fill: #3d2817;
       pointer-events: none;
+      user-select: none;
     }
 
-    .compass-line {
+    .tooltip {
       position: absolute;
-      background: rgba(212, 175, 55, 0.3);
+      background: #3d2817;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 6px;
+      font-size: 12px;
+      max-width: 200px;
+      z-index: 1000;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+      white-space: nowrap;
     }
 
-    .compass-line-vertical {
-      width: 2px;
-      height: 100%;
-      left: 50%;
-      transform: translateX(-1px);
+    .tooltip.show {
+      opacity: 1;
     }
 
-    .compass-line-horizontal {
-      height: 2px;
-      width: 100%;
-      top: 50%;
-      transform: translateY(-1px);
-    }
-
-    /* Legend */
     .legend {
-      margin-top: 60px;
-      text-align: center;
-      color: #5a4a3a;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      background: white;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
     }
 
     .legend-item {
-      display: inline-block;
-      margin: 10px 20px;
-      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #5a4a3a;
     }
 
     .legend-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .color-adopt { background-color: #4caf50; }
+    .color-trial { background-color: #2196f3; }
+    .color-assess { background-color: #ffc107; }
+    .color-hold { background-color: #f44336; }
+
+    .impact-legend {
+      text-align: center;
+      font-size: 12px;
+      color: #8b6f47;
+      margin-top: 20px;
+    }
+
+    .impact-arrow {
       display: inline-block;
-      width: 16px;
-      height: 16px;
-      border-radius: 3px;
-      margin-right: 8px;
-      vertical-align: middle;
+      margin: 0 5px;
     }
 
-    .color-adopt {
-      background-color: #4caf50;
+    @media (max-width: 1200px) {
+      .main-content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .sidebar {
+        width: 100%;
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .filter-section {
+        flex: 1;
+        min-width: 200px;
+        margin-bottom: 0;
+      }
+
+      .radar-container {
+        width: 600px;
+        height: 600px;
+      }
     }
 
-    .color-trial {
-      background-color: #2196f3;
-    }
+    @media (max-width: 768px) {
+      .radar-container {
+        width: 100%;
+        max-width: 500px;
+        height: 500px;
+      }
 
-    .color-assess {
-      background-color: #ffc107;
-    }
-
-    .color-hold {
-      background-color: #f44336;
+      .header h1 {
+        font-size: 28px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="header">
-    <h1>NOC Tech Radar</h1>
-    <p>Drones (Pilot) – Al Shaheen Digital Innovation</p>
-  </div>
-
-  <div class="radar-container">
-    <div class="compass-rose">
-      <div class="compass-line compass-line-vertical"></div>
-      <div class="compass-line compass-line-horizontal"></div>
+  <div class="container">
+    <div class="header">
+      <h1>NOC TECH RADAR 1.0</h1>
+      <p>Insights. Shaping Tomorrow.</p>
+      <p style="font-size: 14px; margin-top: 10px;">Drones (Pilot) – Al Shaheen Digital Innovation</p>
     </div>
 
-    <div class="compass-outer">
-      <div class="compass-inner">
-        <!-- ADOPT (Northwest) -->
-        <div class="quadrant quadrant-adopt">
-          <div class="quadrant-label">ADOPT</div>
-          <div class="item">
-            <span class="item-icon">✅</span>Autonomous Drone Inspection
+    <div class="main-content">
+      <!-- Sidebar Filters -->
+      <div class="sidebar">
+        <div class="filter-section">
+          <h3>📊 Status</h3>
+          <div class="filter-item">
+            <input type="checkbox" id="adopt" checked>
+            <label for="adopt">ADOPT</label>
           </div>
-          <div class="item" style="font-size: 12px; color: #666;">
-            (Platforms, flare stacks)
+          <div class="filter-item">
+            <input type="checkbox" id="trial" checked>
+            <label for="trial">TRIAL</label>
           </div>
-        </div>
-
-        <!-- TRIAL (Northeast) -->
-        <div class="quadrant quadrant-trial">
-          <div class="quadrant-label">TRIAL</div>
-          <div class="item">
-            <span class="item-icon">🔄</span>Methane Leak Detection
+          <div class="filter-item">
+            <input type="checkbox" id="assess" checked>
+            <label for="assess">ASSESS</label>
           </div>
-          <div class="item" style="font-size: 12px; color: #666;">
-            (OGI drones)
-          </div>
-          <div class="item">
-            <span class="item-icon">🔄</span>Confined Space Inspection
-          </div>
-          <div class="item" style="font-size: 12px; color: #666;">
-            (tanks)
+          <div class="filter-item">
+            <input type="checkbox" id="hold" checked>
+            <label for="hold">HOLD</label>
           </div>
         </div>
 
-        <!-- ASSESS (Southeast) -->
-        <div class="quadrant quadrant-assess">
-          <div class="quadrant-label">ASSESS</div>
-          <div class="item">
-            <span class="item-icon">🔍</span>Digital Twin Mapping
+        <div class="filter-section">
+          <h3>🎯 Focus Area</h3>
+          <div class="filter-item">
+            <input type="checkbox" id="inspection" checked>
+            <label for="inspection">Inspection</label>
           </div>
-          <div class="item" style="font-size: 12px; color: #666;">
-            (Drone-based)
+          <div class="filter-item">
+            <input type="checkbox" id="detection" checked>
+            <label for="detection">Detection</label>
           </div>
-        </div>
-
-        <!-- HOLD (Southwest) -->
-        <div class="quadrant quadrant-hold">
-          <div class="quadrant-label">HOLD</div>
-          <div class="item">
-            <span class="item-icon">⚠️</span>Drone Swarms
+          <div class="filter-item">
+            <input type="checkbox" id="mapping" checked>
+            <label for="mapping">Mapping</label>
           </div>
-          <div class="item" style="font-size: 12px; color: #666;">
-            (not mature yet)
+          <div class="filter-item">
+            <input type="checkbox" id="coordination" checked>
+            <label for="coordination">Coordination</label>
           </div>
         </div>
       </div>
 
-      <div class="compass-center"></div>
+      <!-- Radar -->
+      <div class="radar-wrapper">
+        <div class="radar-container">
+          <svg id="radar-svg" viewBox="0 0 700 700">
+            <!-- Background gradient -->
+            <defs>
+              <radialGradient id="bg-gradient" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" style="stop-color:#fef5e7;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#f5e6d3;stop-opacity:1" />
+              </radialGradient>
 
-      <!-- Cardinal directions -->
-      <div class="direction direction-north">N</div>
-      <div class="direction direction-south">S</div>
-      <div class="direction direction-east">E</div>
-      <div class="direction direction-west">W</div>
+              <!-- Quadrant colors -->
+              <linearGradient id="adopt-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#4caf50;stop-opacity:0.1" />
+                <stop offset="100%" style="stop-color:#4caf50;stop-opacity:0" />
+              </linearGradient>
+              <linearGradient id="trial-gradient" x1="100%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#2196f3;stop-opacity:0.1" />
+                <stop offset="100%" style="stop-color:#2196f3;stop-opacity:0" />
+              </linearGradient>
+              <linearGradient id="assess-gradient" x1="100%" y1="100%" x2="0%" y2="0%">
+                <stop offset="0%" style="stop-color:#ffc107;stop-opacity:0.1" />
+                <stop offset="100%" style="stop-color:#ffc107;stop-opacity:0" />
+              </linearGradient>
+              <linearGradient id="hold-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#f44336;stop-opacity:0.1" />
+                <stop offset="100%" style="stop-color:#f44336;stop-opacity:0" />
+              </linearGradient>
+            </defs>
+
+            <!-- Background -->
+            <circle cx="350" cy="350" r="340" fill="url(#bg-gradient)" stroke="#d4af37" stroke-width="2"/>
+
+            <!-- Quadrant backgrounds -->
+            <path d="M 350 350 L 350 10 A 340 340 0 0 0 10 350 Z" fill="url(#adopt-gradient)"/>
+            <path d="M 350 350 L 690 350 A 340 340 0 0 0 350 10 Z" fill="url(#trial-gradient)"/>
+            <path d="M 350 350 L 690 350 A 340 340 0 0 0 10 350 Z" transform="rotate(180 350 350)" fill="url(#assess-gradient)"/>
+            <path d="M 350 350 L 350 690 A 340 340 0 0 0 350 10 Z" transform="rotate(270 350 350)" fill="url(#hold-gradient)"/>
+
+            <!-- Concentric rings (Impact levels) -->
+            <circle cx="350" cy="350" r="280" class="ring"/>
+            <circle cx="350" cy="350" r="210" class="ring"/>
+            <circle cx="350" cy="350" r="140" class="ring"/>
+            <circle cx="350" cy="350" r="70" class="ring"/>
+
+            <!-- Ring labels -->
+            <text x="350" y="80" class="ring-label">HIGH IMPACT</text>
+            <text x="350" y="160" class="ring-label">5-10 YEARS</text>
+            <text x="350" y="230" class="ring-label">2-5 YEARS</text>
+            <text x="350" y="320" class="ring-label">CURRENT</text>
+            <text x="350" y="630" class="ring-label">LOW IMPACT</text>
+
+            <!-- Crosshairs -->
+            <line x1="350" y1="10" x2="350" y2="690" stroke="#d4af37" stroke-width="1" opacity="0.2"/>
+            <line x1="10" y1="350" x2="690" y2="350" stroke="#d4af37" stroke-width="1" opacity="0.2"/>
+
+            <!-- Quadrant labels -->
+            <g class="quadrant-adopt">
+              <text x="140" y="100" class="quadrant-label-text" text-anchor="middle">ADOPT</text>
+              <text x="140" y="118" font-size="11" fill="#5a4a3a" text-anchor="middle">Ready Now</text>
+            </g>
+
+            <g class="quadrant-trial">
+              <text x="560" y="100" class="quadrant-label-text" text-anchor="middle">TRIAL</text>
+              <text x="560" y="118" font-size="11" fill="#5a4a3a" text-anchor="middle">Experimenting</text>
+            </g>
+
+            <g class="quadrant-assess">
+              <text x="560" y="620" class="quadrant-label-text" text-anchor="middle">ASSESS</text>
+              <text x="560" y="638" font-size="11" fill="#5a4a3a" text-anchor="middle">Evaluating</text>
+            </g>
+
+            <g class="quadrant-hold">
+              <text x="140" y="620" class="quadrant-label-text" text-anchor="middle">HOLD</text>
+              <text x="140" y="638" font-size="11" fill="#5a4a3a" text-anchor="middle">Not Ready</text>
+            </g>
+
+            <!-- Items will be rendered by JavaScript -->
+          </svg>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend">
+          <div class="legend-item">
+            <span class="legend-color color-adopt"></span>
+            <strong>ADOPT:</strong> Production-ready
+          </div>
+          <div class="legend-item">
+            <span class="legend-color color-trial"></span>
+            <strong>TRIAL:</strong> Pilot phase
+          </div>
+          <div class="legend-item">
+            <span class="legend-color color-assess"></span>
+            <strong>ASSESS:</strong> Under evaluation
+          </div>
+          <div class="legend-item">
+            <span class="legend-color color-hold"></span>
+            <strong>HOLD:</strong> Needs maturity
+          </div>
+        </div>
+
+        <div class="impact-legend">
+          Center = Current <span class="impact-arrow">→</span> Outer Ring = Future Impact
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="legend">
-    <div style="margin-bottom: 15px; font-weight: bold; color: #3d2817;">Legend</div>
-    <div class="legend-item">
-      <span class="legend-color color-adopt"></span>Ready for Adoption
-    </div>
-    <div class="legend-item">
-      <span class="legend-color color-trial"></span>In Trial
-    </div>
-    <div class="legend-item">
-      <span class="legend-color color-assess"></span>Under Assessment
-    </div>
-    <div class="legend-item">
-      <span class="legend-color color-hold"></span>On Hold
-    </div>
-  </div>
+  <div class="tooltip" id="tooltip"></div>
+
+  <script>
+    const radarData = [
+      {
+        name: "Autonomous Drone Inspection",
+        category: "adopt",
+        impact: 0.3,
+        angle: 45,
+        description: "Autonomous inspection for platforms & flare stacks",
+        focusArea: "inspection"
+      },
+      {
+        name: "Methane Leak Detection (OGI)",
+        category: "trial",
+        impact: 0.5,
+        angle: 70,
+        description: "OGI drone-based methane detection systems",
+        focusArea: "detection"
+      },
+      {
+        name: "Confined Space Inspection",
+        category: "trial",
+        impact: 0.45,
+        angle: 110,
+        description: "Drones for confined space inspections (tanks)",
+        focusArea: "inspection"
+      },
+      {
+        name: "Digital Twin Mapping",
+        category: "assess",
+        impact: 0.65,
+        angle: 225,
+        description: "Drone-based digital twin and 3D mapping",
+        focusArea: "mapping"
+      },
+      {
+        name: "Drone Swarms",
+        category: "hold",
+        impact: 0.75,
+        angle: 315,
+        description: "Multi-drone coordination & swarm technology - Not mature yet",
+        focusArea: "coordination"
+      }
+    ];
+
+    const colors = {
+      adopt: "#4caf50",
+      trial: "#2196f3",
+      assess: "#ffc107",
+      hold: "#f44336"
+    };
+
+    const svg = document.getElementById("radar-svg");
+    const tooltip = document.getElementById("tooltip");
+
+    function renderItems() {
+      // Remove existing items
+      const existingGroup = document.getElementById("items-group");
+      if (existingGroup) existingGroup.remove();
+
+      const itemsGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      itemsGroup.id = "items-group";
+
+      radarData.forEach(item => {
+        // Convert angle and impact to x, y coordinates
+        const centerX = 350, centerY = 350;
+        const maxRadius = 280;
+        const radius = item.impact * maxRadius;
+        const radians = (item.angle * Math.PI) / 180;
+        const x = centerX + radius * Math.cos(radians);
+        const y = centerY + radius * Math.sin(radians);
+
+        // Create dot
+        const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        dot.setAttribute("cx", x);
+        dot.setAttribute("cy", y);
+        dot.setAttribute("r", "4");
+        dot.setAttribute("fill", colors[item.category]);
+        dot.setAttribute("class", `item-dot ${item.category}`);
+        dot.setAttribute("data-category", item.category);
+        dot.setAttribute("data-focus", item.focusArea);
+
+        dot.addEventListener("mouseenter", (e) => {
+          showTooltip(e, item);
+        });
+
+        dot.addEventListener("mouseleave", () => {
+          hideTooltip();
+        });
+
+        itemsGroup.appendChild(dot);
+
+        // Create label (small, offset from dot)
+        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        label.setAttribute("x", x + 12);
+        label.setAttribute("y", y - 6);
+        label.setAttribute("class", "item-label");
+        label.setAttribute("data-category", item.category);
+        label.setAttribute("data-focus", item.focusArea);
+        label.textContent = item.name;
+
+        itemsGroup.appendChild(label);
+      });
+
+      svg.appendChild(itemsGroup);
+    }
+
+    function showTooltip(e, item) {
+      tooltip.textContent = item.description;
+      tooltip.classList.add("show");
+
+      const rect = svg.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      tooltip.style.left = (x + 10) + "px";
+      tooltip.style.top = (y - 40) + "px";
+    }
+
+    function hideTooltip() {
+      tooltip.classList.remove("show");
+    }
+
+    function applyFilters() {
+      const checks = {
+        adopt: document.getElementById("adopt").checked,
+        trial: document.getElementById("trial").checked,
+        assess: document.getElementById("assess").checked,
+        hold: document.getElementById("hold").checked,
+        inspection: document.getElementById("inspection").checked,
+        detection: document.getElementById("detection").checked,
+        mapping: document.getElementById("mapping").checked,
+        coordination: document.getElementById("coordination").checked
+      };
+
+      const itemsGroup = document.getElementById("items-group");
+      if (!itemsGroup) return;
+
+      itemsGroup.querySelectorAll(".item-dot, .item-label").forEach(el => {
+        const category = el.getAttribute("data-category");
+        const focus = el.getAttribute("data-focus");
+
+        const categoryMatch = checks[category];
+        const focusMatch = checks[focus];
+
+        if (categoryMatch && focusMatch) {
+          el.style.opacity = "1";
+          el.style.pointerEvents = "auto";
+        } else {
+          el.style.opacity = "0.2";
+          el.style.pointerEvents = "none";
+        }
+      });
+    }
+
+    // Add filter event listeners
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+      checkbox.addEventListener("change", applyFilters);
+    });
+
+    // Render items on load
+    renderItems();
+  </script>
 
 </body>
 </html>
