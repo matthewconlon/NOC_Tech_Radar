@@ -1,26 +1,353 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NOC Tech Radar</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5e6d3 0%, #e8d4b8 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 60px;
+      color: #5a4a3a;
+    }
+
+    .header h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+      color: #3d2817;
+      letter-spacing: 1px;
+    }
+
+    .header p {
+      font-size: 16px;
+      color: #8b6f47;
+    }
+
+    .radar-container {
+      position: relative;
+      width: 600px;
+      height: 600px;
+      margin: 0 auto;
+    }
+
+    .compass-outer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fef5e7 0%, #f9e8c3 70%, #d4af37 100%);
+      border: 8px solid #d4af37;
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.4), inset 0 0 30px rgba(255, 255, 255, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .compass-inner {
+      position: absolute;
+      width: 85%;
+      height: 85%;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fffef0 0%, #fef5e7 50%, #f5e6d3 100%);
+      border: 3px solid #d4af37;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .compass-center {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: radial-gradient(circle, #ffeb3b 0%, #d4af37 100%);
+      border-radius: 50%;
+      border: 3px solid #d4af37;
+      z-index: 100;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+    }
+
+    /* Compass directions */
+    .direction {
+      position: absolute;
+      font-weight: bold;
+      color: #3d2817;
+      font-size: 18px;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .direction-north {
+      top: -30px;
+      text-align: center;
+    }
+
+    .direction-south {
+      bottom: -30px;
+      text-align: center;
+    }
+
+    .direction-east {
+      right: -35px;
+      width: auto;
+    }
+
+    .direction-west {
+      left: -35px;
+      width: auto;
+    }
+
+    /* Quadrants */
+    .quadrant {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+      border-radius: 50%;
+    }
+
+    .quadrant-adopt {
+      top: 0;
+      left: 0;
+      background: radial-gradient(circle at 100% 100%, rgba(76, 175, 80, 0.15), transparent 70%);
+    }
+
+    .quadrant-trial {
+      top: 0;
+      right: 0;
+      background: radial-gradient(circle at 0% 100%, rgba(33, 150, 243, 0.15), transparent 70%);
+    }
+
+    .quadrant-assess {
+      bottom: 0;
+      right: 0;
+      background: radial-gradient(circle at 0% 0%, rgba(255, 193, 7, 0.15), transparent 70%);
+    }
+
+    .quadrant-hold {
+      bottom: 0;
+      left: 0;
+      background: radial-gradient(circle at 100% 0%, rgba(244, 67, 54, 0.15), transparent 70%);
+    }
+
+    .quadrant-label {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      letter-spacing: 2px;
+    }
+
+    .quadrant-adopt .quadrant-label {
+      color: #2e7d32;
+    }
+
+    .quadrant-trial .quadrant-label {
+      color: #1565c0;
+    }
+
+    .quadrant-assess .quadrant-label {
+      color: #f57f17;
+    }
+
+    .quadrant-hold .quadrant-label {
+      color: #c62828;
+    }
+
+    .item {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #3d2817;
+      margin: 5px 0;
+      font-weight: 500;
+    }
+
+    .item-icon {
+      font-size: 18px;
+      margin-right: 5px;
+    }
+
+    /* Decorative compass rose lines */
+    .compass-rose {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .compass-line {
+      position: absolute;
+      background: rgba(212, 175, 55, 0.3);
+    }
+
+    .compass-line-vertical {
+      width: 2px;
+      height: 100%;
+      left: 50%;
+      transform: translateX(-1px);
+    }
+
+    .compass-line-horizontal {
+      height: 2px;
+      width: 100%;
+      top: 50%;
+      transform: translateY(-1px);
+    }
+
+    /* Legend */
+    .legend {
+      margin-top: 60px;
+      text-align: center;
+      color: #5a4a3a;
+    }
+
+    .legend-item {
+      display: inline-block;
+      margin: 10px 20px;
+      font-size: 14px;
+    }
+
+    .legend-color {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .color-adopt {
+      background-color: #4caf50;
+    }
+
+    .color-trial {
+      background-color: #2196f3;
+    }
+
+    .color-assess {
+      background-color: #ffc107;
+    }
+
+    .color-hold {
+      background-color: #f44336;
+    }
+  </style>
 </head>
 
-<body style="font-family: Arial; text-align: center;">
+<body>
 
-  <h1>NOC Tech Radar – Drones (Pilot)</h1>
-  <p>Initial concept for Al Shaheen digital innovation</p>
+  <div class="header">
+    <h1>NOC Tech Radar</h1>
+    <p>Drones (Pilot) – Al Shaheen Digital Innovation</p>
+  </div>
 
-  <h2>ADOPT</h2>
-  <p>✅ Autonomous Drone Inspection (Platforms, flare stacks)</p>
+  <div class="radar-container">
+    <div class="compass-rose">
+      <div class="compass-line compass-line-vertical"></div>
+      <div class="compass-line compass-line-horizontal"></div>
+    </div>
 
-  <h2>TRIAL</h2>
-  <p>🔄 Methane Leak Detection (OGI drones)</p>
-  <p>🔄 Confined Space Drone Inspection (tanks)</p>
+    <div class="compass-outer">
+      <div class="compass-inner">
+        <!-- ADOPT (Northwest) -->
+        <div class="quadrant quadrant-adopt">
+          <div class="quadrant-label">ADOPT</div>
+          <div class="item">
+            <span class="item-icon">✅</span>Autonomous Drone Inspection
+          </div>
+          <div class="item" style="font-size: 12px; color: #666;">
+            (Platforms, flare stacks)
+          </div>
+        </div>
 
-  <h2>ASSESS</h2>
-  <p>🔍 Drone-based Digital Twin Mapping</p>
+        <!-- TRIAL (Northeast) -->
+        <div class="quadrant quadrant-trial">
+          <div class="quadrant-label">TRIAL</div>
+          <div class="item">
+            <span class="item-icon">🔄</span>Methane Leak Detection
+          </div>
+          <div class="item" style="font-size: 12px; color: #666;">
+            (OGI drones)
+          </div>
+          <div class="item">
+            <span class="item-icon">🔄</span>Confined Space Inspection
+          </div>
+          <div class="item" style="font-size: 12px; color: #666;">
+            (tanks)
+          </div>
+        </div>
 
-  <h2>HOLD</h2>
-  <p>⚠️ Drone Swarms (not mature yet)</p>
+        <!-- ASSESS (Southeast) -->
+        <div class="quadrant quadrant-assess">
+          <div class="quadrant-label">ASSESS</div>
+          <div class="item">
+            <span class="item-icon">🔍</span>Digital Twin Mapping
+          </div>
+          <div class="item" style="font-size: 12px; color: #666;">
+            (Drone-based)
+          </div>
+        </div>
+
+        <!-- HOLD (Southwest) -->
+        <div class="quadrant quadrant-hold">
+          <div class="quadrant-label">HOLD</div>
+          <div class="item">
+            <span class="item-icon">⚠️</span>Drone Swarms
+          </div>
+          <div class="item" style="font-size: 12px; color: #666;">
+            (not mature yet)
+          </div>
+        </div>
+      </div>
+
+      <div class="compass-center"></div>
+
+      <!-- Cardinal directions -->
+      <div class="direction direction-north">N</div>
+      <div class="direction direction-south">S</div>
+      <div class="direction direction-east">E</div>
+      <div class="direction direction-west">W</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div style="margin-bottom: 15px; font-weight: bold; color: #3d2817;">Legend</div>
+    <div class="legend-item">
+      <span class="legend-color color-adopt"></span>Ready for Adoption
+    </div>
+    <div class="legend-item">
+      <span class="legend-color color-trial"></span>In Trial
+    </div>
+    <div class="legend-item">
+      <span class="legend-color color-assess"></span>Under Assessment
+    </div>
+    <div class="legend-item">
+      <span class="legend-color color-hold"></span>On Hold
+    </div>
+  </div>
 
 </body>
 </html>
