@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NOC Tech Radar – Drones</title>
+  <title>Subsurface Technology Radar</title>
   <style>
     * {
       margin: 0;
@@ -13,7 +13,7 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #f5e6d3 0%, #e8d4b8 100%);
+      background: linear-gradient(135deg, #e3f2fd 0%, #b3e5fc 100%);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -30,11 +30,11 @@
     .header {
       text-align: center;
       margin-bottom: 40px;
-      color: #3d2817;
+      color: #01579b;
     }
 
     .header h1 {
-      font-size: 42px;
+      font-size: 48px;
       margin-bottom: 10px;
       font-weight: 700;
       letter-spacing: 1px;
@@ -42,8 +42,14 @@
 
     .header p {
       font-size: 16px;
-      color: #8b6f47;
-      margin-bottom: 20px;
+      color: #0277bd;
+      margin-bottom: 5px;
+    }
+
+    .header .subtitle {
+      font-size: 14px;
+      color: #0288d1;
+      margin-top: 10px;
     }
 
     .main-content {
@@ -53,7 +59,7 @@
     }
 
     .sidebar {
-      width: 220px;
+      width: 240px;
       flex-shrink: 0;
     }
 
@@ -68,7 +74,7 @@
     .filter-section h3 {
       font-size: 14px;
       font-weight: 700;
-      color: #3d2817;
+      color: #01579b;
       margin-bottom: 15px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -85,13 +91,13 @@
       width: 20px;
       height: 20px;
       cursor: pointer;
-      accent-color: #d4af37;
+      accent-color: #0288d1;
     }
 
     .filter-item label {
       margin-left: 10px;
       font-size: 13px;
-      color: #5a4a3a;
+      color: #424242;
       cursor: pointer;
       user-select: none;
     }
@@ -106,11 +112,11 @@
 
     .radar-container {
       position: relative;
-      width: 700px;
-      height: 700px;
+      width: 750px;
+      height: 750px;
       background: white;
       border-radius: 50%;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
     }
 
     svg {
@@ -120,61 +126,66 @@
 
     .ring {
       fill: none;
-      stroke: #d4af37;
-      stroke-width: 1;
-      opacity: 0.3;
+      stroke: #b3e5fc;
+      stroke-width: 1.5;
+      opacity: 0.6;
     }
 
     .ring-label {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 600;
-      fill: #8b6f47;
+      fill: #0277bd;
       text-anchor: middle;
     }
 
-    .quadrant-label-text {
-      font-size: 16px;
+    .direction-label {
+      font-size: 18px;
       font-weight: 700;
+      fill: #01579b;
+      text-anchor: middle;
       letter-spacing: 1px;
     }
 
-    .quadrant-adopt .quadrant-label-text { fill: #2e7d32; }
-    .quadrant-trial .quadrant-label-text { fill: #1565c0; }
-    .quadrant-assess .quadrant-label-text { fill: #f57f17; }
-    .quadrant-hold .quadrant-label-text { fill: #c62828; }
+    .direction-desc {
+      font-size: 13px;
+      font-weight: 600;
+      fill: #0277bd;
+      text-anchor: middle;
+    }
 
     .item-dot {
       cursor: pointer;
       transition: all 0.3s ease;
-      filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2));
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
     }
 
     .item-dot:hover {
-      r: 6;
-      filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.3));
+      r: 7;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
     }
 
     .item-label {
-      font-size: 11px;
-      font-weight: 500;
-      fill: #3d2817;
+      font-size: 10px;
+      font-weight: 600;
+      fill: #01579b;
       pointer-events: none;
       user-select: none;
     }
 
     .tooltip {
       position: absolute;
-      background: #3d2817;
+      background: #01579b;
       color: white;
-      padding: 10px 15px;
+      padding: 12px 16px;
       border-radius: 6px;
       font-size: 12px;
-      max-width: 200px;
+      max-width: 220px;
       z-index: 1000;
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.2s;
-      white-space: nowrap;
+      white-space: normal;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     .tooltip.show {
@@ -187,7 +198,7 @@
       gap: 40px;
       flex-wrap: wrap;
       background: white;
-      padding: 20px 30px;
+      padding: 25px 30px;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       width: 100%;
@@ -198,7 +209,7 @@
       align-items: center;
       gap: 10px;
       font-size: 13px;
-      color: #5a4a3a;
+      color: #424242;
     }
 
     .legend-color {
@@ -216,13 +227,8 @@
     .impact-legend {
       text-align: center;
       font-size: 12px;
-      color: #8b6f47;
+      color: #0277bd;
       margin-top: 20px;
-    }
-
-    .impact-arrow {
-      display: inline-block;
-      margin: 0 5px;
     }
 
     @media (max-width: 1200px) {
@@ -245,20 +251,20 @@
       }
 
       .radar-container {
-        width: 600px;
-        height: 600px;
+        width: 650px;
+        height: 650px;
       }
     }
 
     @media (max-width: 768px) {
       .radar-container {
         width: 100%;
-        max-width: 500px;
-        height: 500px;
+        max-width: 550px;
+        height: 550px;
       }
 
       .header h1 {
-        font-size: 28px;
+        font-size: 32px;
       }
     }
   </style>
@@ -268,16 +274,16 @@
 
   <div class="container">
     <div class="header">
-      <h1>NOC TECH RADAR 1.0</h1>
-      <p>Insights. Shaping Tomorrow.</p>
-      <p style="font-size: 14px; margin-top: 10px;">Drones (Pilot) – Al Shaheen Digital Innovation</p>
+      <h1>SUBSURFACE TECHNOLOGY RADAR</h1>
+      <p>Al Shaheen Digital Innovation – Drones (Pilot)</p>
+      <p class="subtitle">8 sectors • 3 time rings • Technologies across subsurface domains</p>
     </div>
 
     <div class="main-content">
       <!-- Sidebar Filters -->
       <div class="sidebar">
         <div class="filter-section">
-          <h3>📊 Status</h3>
+          <h3>🎯 Maturity</h3>
           <div class="filter-item">
             <input type="checkbox" id="adopt" checked>
             <label for="adopt">ADOPT</label>
@@ -297,22 +303,22 @@
         </div>
 
         <div class="filter-section">
-          <h3>🎯 Focus Area</h3>
+          <h3>🔧 Domain</h3>
           <div class="filter-item">
-            <input type="checkbox" id="inspection" checked>
-            <label for="inspection">Inspection</label>
+            <input type="checkbox" id="thin-oil" checked>
+            <label for="thin-oil">Thin Oil Column</label>
           </div>
           <div class="filter-item">
-            <input type="checkbox" id="detection" checked>
-            <label for="detection">Detection</label>
+            <input type="checkbox" id="digital-ai" checked>
+            <label for="digital-ai">Digital / AI</label>
           </div>
           <div class="filter-item">
-            <input type="checkbox" id="mapping" checked>
-            <label for="mapping">Mapping</label>
+            <input type="checkbox" id="water-gas" checked>
+            <label for="water-gas">Water & Gas Mgmt</label>
           </div>
           <div class="filter-item">
-            <input type="checkbox" id="coordination" checked>
-            <label for="coordination">Coordination</label>
+            <input type="checkbox" id="heavy-oil" checked>
+            <label for="heavy-oil">Heavy Oil</label>
           </div>
         </div>
       </div>
@@ -320,79 +326,80 @@
       <!-- Radar -->
       <div class="radar-wrapper">
         <div class="radar-container">
-          <svg id="radar-svg" viewBox="0 0 700 700">
+          <svg id="radar-svg" viewBox="0 0 750 750">
             <!-- Background gradient -->
             <defs>
               <radialGradient id="bg-gradient" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" style="stop-color:#fef5e7;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#f5e6d3;stop-opacity:1" />
+                <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#e1f5fe;stop-opacity:1" />
               </radialGradient>
 
               <!-- Quadrant colors -->
-              <linearGradient id="adopt-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#4caf50;stop-opacity:0.1" />
-                <stop offset="100%" style="stop-color:#4caf50;stop-opacity:0" />
+              <linearGradient id="thin-oil-gradient" x1="50%" y1="0%" x2="50%" y2="50%">
+                <stop offset="0%" style="stop-color:#4db8ff;stop-opacity:0.08" />
+                <stop offset="100%" style="stop-color:#4db8ff;stop-opacity:0" />
               </linearGradient>
-              <linearGradient id="trial-gradient" x1="100%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:#2196f3;stop-opacity:0.1" />
-                <stop offset="100%" style="stop-color:#2196f3;stop-opacity:0" />
+              <linearGradient id="digital-gradient" x1="100%" y1="50%" x2="50%" y2="50%">
+                <stop offset="0%" style="stop-color:#4db8ff;stop-opacity:0.08" />
+                <stop offset="100%" style="stop-color:#4db8ff;stop-opacity:0" />
               </linearGradient>
-              <linearGradient id="assess-gradient" x1="100%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" style="stop-color:#ffc107;stop-opacity:0.1" />
-                <stop offset="100%" style="stop-color:#ffc107;stop-opacity:0" />
+              <linearGradient id="water-gradient" x1="50%" y1="100%" x2="50%" y2="50%">
+                <stop offset="0%" style="stop-color:#4db8ff;stop-opacity:0.08" />
+                <stop offset="100%" style="stop-color:#4db8ff;stop-opacity:0" />
               </linearGradient>
-              <linearGradient id="hold-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%" style="stop-color:#f44336;stop-opacity:0.1" />
-                <stop offset="100%" style="stop-color:#f44336;stop-opacity:0" />
+              <linearGradient id="heavy-gradient" x1="0%" y1="50%" x2="50%" y2="50%">
+                <stop offset="0%" style="stop-color:#4db8ff;stop-opacity:0.08" />
+                <stop offset="100%" style="stop-color:#4db8ff;stop-opacity:0" />
               </linearGradient>
             </defs>
 
             <!-- Background -->
-            <circle cx="350" cy="350" r="340" fill="url(#bg-gradient)" stroke="#d4af37" stroke-width="2"/>
+            <circle cx="375" cy="375" r="360" fill="url(#bg-gradient)" stroke="#b3e5fc" stroke-width="2"/>
 
             <!-- Quadrant backgrounds -->
-            <path d="M 350 350 L 350 10 A 340 340 0 0 0 10 350 Z" fill="url(#adopt-gradient)"/>
-            <path d="M 350 350 L 690 350 A 340 340 0 0 0 350 10 Z" fill="url(#trial-gradient)"/>
-            <path d="M 350 350 L 690 350 A 340 340 0 0 0 10 350 Z" transform="rotate(180 350 350)" fill="url(#assess-gradient)"/>
-            <path d="M 350 350 L 350 690 A 340 340 0 0 0 350 10 Z" transform="rotate(270 350 350)" fill="url(#hold-gradient)"/>
+            <path d="M 375 375 L 375 15 A 360 360 0 0 0 15 375 Z" fill="url(#thin-oil-gradient)"/>
+            <path d="M 375 375 L 735 375 A 360 360 0 0 0 375 15 Z" fill="url(#digital-gradient)"/>
+            <path d="M 375 375 L 735 375 A 360 360 0 0 0 375 735 Z" fill="url(#water-gradient)"/>
+            <path d="M 375 375 L 375 735 A 360 360 0 0 0 15 375 Z" fill="url(#heavy-gradient)"/>
 
-            <!-- Concentric rings (Impact levels) -->
-            <circle cx="350" cy="350" r="280" class="ring"/>
-            <circle cx="350" cy="350" r="210" class="ring"/>
-            <circle cx="350" cy="350" r="140" class="ring"/>
-            <circle cx="350" cy="350" r="70" class="ring"/>
+            <!-- Concentric rings -->
+            <circle cx="375" cy="375" r="300" class="ring"/>
+            <circle cx="375" cy="375" r="225" class="ring"/>
+            <circle cx="375" cy="375" r="150" class="ring"/>
+            <circle cx="375" cy="375" r="75" class="ring"/>
 
             <!-- Ring labels -->
-            <text x="350" y="80" class="ring-label">HIGH IMPACT</text>
-            <text x="350" y="160" class="ring-label">5-10 YEARS</text>
-            <text x="350" y="230" class="ring-label">2-5 YEARS</text>
-            <text x="350" y="320" class="ring-label">CURRENT</text>
-            <text x="350" y="630" class="ring-label">LOW IMPACT</text>
+            <text x="375" y="35" class="ring-label">LONG TERM (>18 mo)</text>
+            <text x="375" y="165" class="ring-label">MID TERM (9-18 mo)</text>
+            <text x="375" y="245" class="ring-label">SHORT TERM (0-9 mo)</text>
 
             <!-- Crosshairs -->
-            <line x1="350" y1="10" x2="350" y2="690" stroke="#d4af37" stroke-width="1" opacity="0.2"/>
-            <line x1="10" y1="350" x2="690" y2="350" stroke="#d4af37" stroke-width="1" opacity="0.2"/>
+            <line x1="375" y1="15" x2="375" y2="735" stroke="#b3e5fc" stroke-width="1.5" opacity="0.4"/>
+            <line x1="15" y1="375" x2="735" y2="375" stroke="#b3e5fc" stroke-width="1.5" opacity="0.4"/>
 
-            <!-- Quadrant labels -->
-            <g class="quadrant-adopt">
-              <text x="140" y="100" class="quadrant-label-text" text-anchor="middle">ADOPT</text>
-              <text x="140" y="118" font-size="11" fill="#5a4a3a" text-anchor="middle">Ready Now</text>
-            </g>
+            <!-- Cardinal directions and descriptors -->
+            <!-- North -->
+            <text x="375" y="30" class="direction-label">N</text>
+            <text x="375" y="55" class="direction-desc">Thin Oil</text>
+            <text x="375" y="70" class="direction-desc">Column</text>
 
-            <g class="quadrant-trial">
-              <text x="560" y="100" class="quadrant-label-text" text-anchor="middle">TRIAL</text>
-              <text x="560" y="118" font-size="11" fill="#5a4a3a" text-anchor="middle">Experimenting</text>
-            </g>
+            <!-- East -->
+            <text x="720" y="380" class="direction-label">E</text>
+            <text x="720" y="400" class="direction-desc">Digital / AI</text>
 
-            <g class="quadrant-assess">
-              <text x="560" y="620" class="quadrant-label-text" text-anchor="middle">ASSESS</text>
-              <text x="560" y="638" font-size="11" fill="#5a4a3a" text-anchor="middle">Evaluating</text>
-            </g>
+            <!-- South -->
+            <text x="375" y="740" class="direction-label">S</text>
+            <text x="375" y="720" class="direction-desc">Water & Gas</text>
+            <text x="375" y="705" class="direction-desc">Management</text>
 
-            <g class="quadrant-hold">
-              <text x="140" y="620" class="quadrant-label-text" text-anchor="middle">HOLD</text>
-              <text x="140" y="638" font-size="11" fill="#5a4a3a" text-anchor="middle">Not Ready</text>
-            </g>
+            <!-- West -->
+            <text x="30" y="380" class="direction-label">W</text>
+            <text x="30" y="400" class="direction-desc">Heavy Oil</text>
+
+            <!-- Center text -->
+            <text x="375" y="370" style="font-size: 16px; font-weight: 700; fill: #01579b; text-anchor: middle;">SUBSURFACE</text>
+            <text x="375" y="390" style="font-size: 16px; font-weight: 700; fill: #01579b; text-anchor: middle;">TECHNOLOGY</text>
+            <text x="375" y="410" style="font-size: 16px; font-weight: 700; fill: #01579b; text-anchor: middle;">RADAR</text>
 
             <!-- Items will be rendered by JavaScript -->
           </svg>
@@ -410,7 +417,7 @@
           </div>
           <div class="legend-item">
             <span class="legend-color color-assess"></span>
-            <strong>ASSESS:</strong> Under evaluation
+            <strong>ASSESS:</strong> Evaluating
           </div>
           <div class="legend-item">
             <span class="legend-color color-hold"></span>
@@ -419,7 +426,7 @@
         </div>
 
         <div class="impact-legend">
-          Center = Current <span class="impact-arrow">→</span> Outer Ring = Future Impact
+          Center = Current Implementation <span style="margin: 0 10px;">→</span> Outer Ring = Future Vision
         </div>
       </div>
     </div>
@@ -432,42 +439,66 @@
       {
         name: "Autonomous Drone Inspection",
         category: "adopt",
-        impact: 0.3,
-        angle: 45,
-        description: "Autonomous inspection for platforms & flare stacks",
-        focusArea: "inspection"
+        impact: 0.35,
+        angle: 10,
+        description: "Autonomous inspection for platforms & flare stacks. Production-ready technology.",
+        domain: "thin-oil"
       },
       {
         name: "Methane Leak Detection (OGI)",
         category: "trial",
-        impact: 0.5,
-        angle: 70,
-        description: "OGI drone-based methane detection systems",
-        focusArea: "detection"
+        impact: 0.55,
+        angle: 85,
+        description: "OGI drone-based methane detection systems. Pilot phase with early results.",
+        domain: "digital-ai"
       },
       {
         name: "Confined Space Inspection",
         category: "trial",
-        impact: 0.45,
-        angle: 110,
-        description: "Drones for confined space inspections (tanks)",
-        focusArea: "inspection"
+        impact: 0.50,
+        angle: 70,
+        description: "Drones for confined space inspections (tanks). Under trial in controlled environments.",
+        domain: "thin-oil"
       },
       {
         name: "Digital Twin Mapping",
         category: "assess",
-        impact: 0.65,
-        angle: 225,
-        description: "Drone-based digital twin and 3D mapping",
-        focusArea: "mapping"
+        impact: 0.70,
+        angle: 110,
+        description: "Drone-based digital twin and 3D mapping of subsurface assets. Under evaluation.",
+        domain: "digital-ai"
       },
       {
         name: "Drone Swarms",
         category: "hold",
-        impact: 0.75,
-        angle: 315,
-        description: "Multi-drone coordination & swarm technology - Not mature yet",
-        focusArea: "coordination"
+        impact: 0.80,
+        angle: 220,
+        description: "Multi-drone coordination & swarm technology. Not mature yet, requires further development.",
+        domain: "digital-ai"
+      },
+      {
+        name: "Water Management Monitoring",
+        category: "assess",
+        impact: 0.60,
+        angle: 200,
+        description: "Drone-based water injection monitoring and management. Early assessment phase.",
+        domain: "water-gas"
+      },
+      {
+        name: "Heavy Oil Reservoir Mapping",
+        category: "trial",
+        impact: 0.65,
+        angle: 280,
+        description: "Advanced drone mapping for heavy oil field characterization. Pilot deployments underway.",
+        domain: "heavy-oil"
+      },
+      {
+        name: "Real-time Subsurface Analytics",
+        category: "trial",
+        impact: 0.45,
+        angle: 135,
+        description: "AI-powered real-time analysis of drone survey data. Development phase with promising results.",
+        domain: "digital-ai"
       }
     ];
 
@@ -482,7 +513,6 @@
     const tooltip = document.getElementById("tooltip");
 
     function renderItems() {
-      // Remove existing items
       const existingGroup = document.getElementById("items-group");
       if (existingGroup) existingGroup.remove();
 
@@ -490,9 +520,8 @@
       itemsGroup.id = "items-group";
 
       radarData.forEach(item => {
-        // Convert angle and impact to x, y coordinates
-        const centerX = 350, centerY = 350;
-        const maxRadius = 280;
+        const centerX = 375, centerY = 375;
+        const maxRadius = 300;
         const radius = item.impact * maxRadius;
         const radians = (item.angle * Math.PI) / 180;
         const x = centerX + radius * Math.cos(radians);
@@ -502,11 +531,11 @@
         const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
         dot.setAttribute("cx", x);
         dot.setAttribute("cy", y);
-        dot.setAttribute("r", "4");
+        dot.setAttribute("r", "5");
         dot.setAttribute("fill", colors[item.category]);
         dot.setAttribute("class", `item-dot ${item.category}`);
         dot.setAttribute("data-category", item.category);
-        dot.setAttribute("data-focus", item.focusArea);
+        dot.setAttribute("data-domain", item.domain);
 
         dot.addEventListener("mouseenter", (e) => {
           showTooltip(e, item);
@@ -518,13 +547,13 @@
 
         itemsGroup.appendChild(dot);
 
-        // Create label (small, offset from dot)
+        // Create label
         const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        label.setAttribute("x", x + 12);
-        label.setAttribute("y", y - 6);
+        label.setAttribute("x", x + 14);
+        label.setAttribute("y", y - 8);
         label.setAttribute("class", "item-label");
         label.setAttribute("data-category", item.category);
-        label.setAttribute("data-focus", item.focusArea);
+        label.setAttribute("data-domain", item.domain);
         label.textContent = item.name;
 
         itemsGroup.appendChild(label);
@@ -542,7 +571,7 @@
       const y = e.clientY - rect.top;
 
       tooltip.style.left = (x + 10) + "px";
-      tooltip.style.top = (y - 40) + "px";
+      tooltip.style.top = (y - 50) + "px";
     }
 
     function hideTooltip() {
@@ -555,10 +584,10 @@
         trial: document.getElementById("trial").checked,
         assess: document.getElementById("assess").checked,
         hold: document.getElementById("hold").checked,
-        inspection: document.getElementById("inspection").checked,
-        detection: document.getElementById("detection").checked,
-        mapping: document.getElementById("mapping").checked,
-        coordination: document.getElementById("coordination").checked
+        "thin-oil": document.getElementById("thin-oil").checked,
+        "digital-ai": document.getElementById("digital-ai").checked,
+        "water-gas": document.getElementById("water-gas").checked,
+        "heavy-oil": document.getElementById("heavy-oil").checked
       };
 
       const itemsGroup = document.getElementById("items-group");
@@ -566,12 +595,12 @@
 
       itemsGroup.querySelectorAll(".item-dot, .item-label").forEach(el => {
         const category = el.getAttribute("data-category");
-        const focus = el.getAttribute("data-focus");
+        const domain = el.getAttribute("data-domain");
 
         const categoryMatch = checks[category];
-        const focusMatch = checks[focus];
+        const domainMatch = checks[domain];
 
-        if (categoryMatch && focusMatch) {
+        if (categoryMatch && domainMatch) {
           el.style.opacity = "1";
           el.style.pointerEvents = "auto";
         } else {
@@ -586,7 +615,6 @@
       checkbox.addEventListener("change", applyFilters);
     });
 
-    // Render items on load
     renderItems();
   </script>
 
