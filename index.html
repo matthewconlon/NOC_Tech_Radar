@@ -176,20 +176,34 @@
       position: absolute;
       background: #01579b;
       color: white;
-      padding: 12px 16px;
-      border-radius: 6px;
+      padding: 16px 20px;
+      border-radius: 8px;
       font-size: 12px;
-      max-width: 220px;
+      max-width: 350px;
       z-index: 1000;
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.2s;
       white-space: normal;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      line-height: 1.5;
     }
 
     .tooltip.show {
       opacity: 1;
+    }
+
+    .tooltip-title {
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      padding-bottom: 6px;
+    }
+
+    .tooltip-content {
+      font-size: 11px;
+      line-height: 1.6;
     }
 
     .legend {
@@ -265,6 +279,11 @@
 
       .header h1 {
         font-size: 32px;
+      }
+
+      .tooltip {
+        max-width: 280px;
+        font-size: 11px;
       }
     }
   </style>
@@ -441,64 +460,64 @@
         category: "adopt",
         impact: 0.35,
         angle: 10,
-        description: "Autonomous inspection for platforms & flare stacks. Production-ready technology.",
-        domain: "thin-oil"
+        summary: "Autonomous inspection for platforms & flare stacks.",
+        details: "Unmanned aerial vehicles (UAVs) equipped with autonomous flight systems for automated visual inspection of offshore and onshore assets. These systems use GPS, computer vision, and pre-programmed flight paths to capture high-resolution imagery and video of structures, reducing safety risks and operational costs."
       },
       {
         name: "Methane Leak Detection (OGI)",
         category: "trial",
         impact: 0.55,
         angle: 85,
-        description: "OGI drone-based methane detection systems. Pilot phase with early results.",
-        domain: "digital-ai"
+        summary: "OGI drone-based methane detection systems.",
+        details: "Optical Gas Imaging (OGI) is a thermal imaging technology that detects hydrocarbon gas emissions invisible to the human eye. Mounted on drones, OGI cameras can rapidly identify and locate methane leaks across large areas, enabling faster remediation and improved environmental compliance."
       },
       {
         name: "Confined Space Inspection",
         category: "trial",
         impact: 0.50,
         angle: 70,
-        description: "Drones for confined space inspections (tanks). Under trial in controlled environments.",
-        domain: "thin-oil"
+        summary: "Drones for confined space inspections (tanks).",
+        details: "Deployment of small drones and robotic systems for inspection of confined spaces such as storage tanks, pipelines, and vessel interiors. This technology eliminates the need for human entry into hazardous environments, improving worker safety and providing detailed visual assessment of internal conditions."
       },
       {
         name: "Digital Twin Mapping",
         category: "assess",
         impact: 0.70,
         angle: 110,
-        description: "Drone-based digital twin and 3D mapping of subsurface assets. Under evaluation.",
-        domain: "digital-ai"
+        summary: "Drone-based digital twin and 3D mapping.",
+        details: "A digital twin is a virtual replica of a physical asset created using drone survey data and 3D modeling. This technology enables real-time monitoring, predictive maintenance, and operational optimization by combining high-resolution imagery with geospatial data."
       },
       {
         name: "Drone Swarms",
         category: "hold",
         impact: 0.80,
         angle: 220,
-        description: "Multi-drone coordination & swarm technology. Not mature yet, requires further development.",
-        domain: "digital-ai"
+        summary: "Multi-drone coordination & swarm technology.",
+        details: "Swarm robotics involves coordinating multiple drones to work collectively toward a common objective. While promising for large-area coverage, real-time collaboration, and resilience, this technology remains immature due to challenges in communication protocols, collision avoidance, and regulatory frameworks."
       },
       {
         name: "Water Management Monitoring",
         category: "assess",
         impact: 0.60,
         angle: 200,
-        description: "Drone-based water injection monitoring and management. Early assessment phase.",
-        domain: "water-gas"
+        summary: "Drone-based water injection monitoring.",
+        details: "Aerial monitoring of water injection facilities and produced water management systems. Drones equipped with thermal and multispectral sensors can assess facility performance, detect anomalies, and monitor environmental impacts in real-time."
       },
       {
         name: "Heavy Oil Reservoir Mapping",
         category: "trial",
         impact: 0.65,
         angle: 280,
-        description: "Advanced drone mapping for heavy oil field characterization. Pilot deployments underway.",
-        domain: "heavy-oil"
+        summary: "Advanced drone mapping for heavy oil fields.",
+        details: "Specialized drone systems for characterizing heavy oil reservoirs through detailed surface surveys, topographic mapping, and seismic data integration. This technology supports better reservoir understanding and production optimization in challenging heavy oil environments."
       },
       {
         name: "Real-time Subsurface Analytics",
         category: "trial",
         impact: 0.45,
         angle: 135,
-        description: "AI-powered real-time analysis of drone survey data. Development phase with promising results.",
-        domain: "digital-ai"
+        summary: "AI-powered real-time analysis of drone data.",
+        details: "Machine learning and artificial intelligence algorithms that automatically process and interpret drone survey data, including image recognition, anomaly detection, and predictive modeling. This enables faster decision-making and identification of operational issues without manual analysis delays."
       }
     ];
 
@@ -535,7 +554,7 @@
         dot.setAttribute("fill", colors[item.category]);
         dot.setAttribute("class", `item-dot ${item.category}`);
         dot.setAttribute("data-category", item.category);
-        dot.setAttribute("data-domain", item.domain);
+        dot.setAttribute("data-index", radarData.indexOf(item));
 
         dot.addEventListener("mouseenter", (e) => {
           showTooltip(e, item);
@@ -553,7 +572,7 @@
         label.setAttribute("y", y - 8);
         label.setAttribute("class", "item-label");
         label.setAttribute("data-category", item.category);
-        label.setAttribute("data-domain", item.domain);
+        label.setAttribute("data-index", radarData.indexOf(item));
         label.textContent = item.name;
 
         itemsGroup.appendChild(label);
@@ -563,7 +582,10 @@
     }
 
     function showTooltip(e, item) {
-      tooltip.textContent = item.description;
+      tooltip.innerHTML = `
+        <div class="tooltip-title">${item.name}</div>
+        <div class="tooltip-content">${item.details}</div>
+      `;
       tooltip.classList.add("show");
 
       const rect = svg.getBoundingClientRect();
@@ -571,7 +593,7 @@
       const y = e.clientY - rect.top;
 
       tooltip.style.left = (x + 10) + "px";
-      tooltip.style.top = (y - 50) + "px";
+      tooltip.style.top = (y - 80) + "px";
     }
 
     function hideTooltip() {
@@ -583,11 +605,7 @@
         adopt: document.getElementById("adopt").checked,
         trial: document.getElementById("trial").checked,
         assess: document.getElementById("assess").checked,
-        hold: document.getElementById("hold").checked,
-        "thin-oil": document.getElementById("thin-oil").checked,
-        "digital-ai": document.getElementById("digital-ai").checked,
-        "water-gas": document.getElementById("water-gas").checked,
-        "heavy-oil": document.getElementById("heavy-oil").checked
+        hold: document.getElementById("hold").checked
       };
 
       const itemsGroup = document.getElementById("items-group");
@@ -595,12 +613,8 @@
 
       itemsGroup.querySelectorAll(".item-dot, .item-label").forEach(el => {
         const category = el.getAttribute("data-category");
-        const domain = el.getAttribute("data-domain");
 
-        const categoryMatch = checks[category];
-        const domainMatch = checks[domain];
-
-        if (categoryMatch && domainMatch) {
+        if (checks[category]) {
           el.style.opacity = "1";
           el.style.pointerEvents = "auto";
         } else {
