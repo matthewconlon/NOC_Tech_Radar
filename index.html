@@ -215,7 +215,7 @@
       user-select: none;
     }
 
-    /* Radar scanner animation */
+    /* Enhanced Radar Scanner Animation */
     @keyframes radarScan {
       0% {
         transform: rotate(0deg);
@@ -225,15 +225,59 @@
       }
     }
 
+    @keyframes scannerPulse {
+      0% {
+        opacity: 0.9;
+        stroke-width: 2;
+      }
+      50% {
+        opacity: 0.5;
+      }
+      100% {
+        opacity: 0.9;
+        stroke-width: 2;
+      }
+    }
+
+    @keyframes scannerGlowPulse {
+      0% {
+        opacity: 0.6;
+      }
+      50% {
+        opacity: 0.2;
+      }
+      100% {
+        opacity: 0.6;
+      }
+    }
+
+    @keyframes particleFloat {
+      0% {
+        opacity: 0;
+        cy: 375;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        cy: 100;
+      }
+    }
+
     .radar-scanner {
-      animation: radarScan 8s linear infinite;
+      animation: radarScan 10s linear infinite;
       transform-origin: center;
     }
 
     .scanner-line {
       stroke: #0288d1;
       stroke-width: 2;
-      opacity: 0.8;
+      opacity: 0.9;
+      animation: scannerPulse 3s ease-in-out infinite;
     }
 
     .scanner-glow {
@@ -241,6 +285,19 @@
       stroke: url(#scannerGradient);
       stroke-width: 3;
       opacity: 0.6;
+      animation: scannerGlowPulse 3s ease-in-out infinite;
+    }
+
+    .scanner-arc {
+      fill: none;
+      stroke: #0288d1;
+      stroke-width: 1;
+      opacity: 0.3;
+    }
+
+    .scanner-particle {
+      fill: #0288d1;
+      animation: particleFloat 4s ease-out infinite;
     }
 
     .tooltip {
@@ -589,12 +646,25 @@
             <text x="375" y="390" style="font-size: 16px; font-weight: 700; fill: #01579b; text-anchor: middle;">TECHNOLOGY</text>
             <text x="375" y="410" style="font-size: 16px; font-weight: 700; fill: #01579b; text-anchor: middle;">RADAR</text>
 
-            <!-- Scanner group -->
+            <!-- Scanner group with enhanced animation -->
             <g class="radar-scanner" id="scanner-group">
               <!-- Scanner sweep line -->
               <line x1="375" y1="375" x2="375" y2="35" class="scanner-line"/>
-              <!-- Scanner glow effect -->
+              
+              <!-- Primary scanner glow -->
               <path d="M 375 375 L 375 35 A 340 340 0 0 1 715 375" class="scanner-glow" />
+              
+              <!-- Secondary arc for depth effect -->
+              <circle cx="375" cy="375" r="200" class="scanner-arc" opacity="0.2"/>
+              <circle cx="375" cy="375" r="150" class="scanner-arc" opacity="0.15"/>
+            </g>
+
+            <!-- Floating particles for atmosphere -->
+            <g id="particles-group">
+              <circle class="scanner-particle" cx="375" cy="375" r="1.5" style="animation-delay: 0s;"/>
+              <circle class="scanner-particle" cx="375" cy="375" r="1" style="animation-delay: 1s;"/>
+              <circle class="scanner-particle" cx="375" cy="375" r="1.2" style="animation-delay: 2s;"/>
+              <circle class="scanner-particle" cx="375" cy="375" r="1.5" style="animation-delay: 3s;"/>
             </g>
 
             <!-- Items will be rendered by JavaScript -->
